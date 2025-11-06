@@ -1,0 +1,31 @@
+using Api.Contracts;
+using Domain.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace StockApi.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class StockController(IStockService service) : ControllerBase
+    {
+        [HttpPost]
+        public ActionResult<StockResponseContract> CreateStock(StockRequestContract stockRequestContract)
+        {
+            var createdStock = service.CreateStock(stockRequestContract);
+            return CreatedAtAction(nameof(GetStock), new { id = createdStock.Id }, createdStock);
+        }
+        [HttpGet("{id}")]
+        public ActionResult<StockResponseContract> GetStock([FromRoute] int id)
+        {
+            var stock = service.GetStock(id);
+            return Ok(stock);
+        }
+        [HttpGet]
+        public ActionResult<IEnumerable<StockResponseContract>> GetAllStocks()
+        {
+            var result = service.GetAllStock();
+            return Ok(result);
+        }
+    }
+}

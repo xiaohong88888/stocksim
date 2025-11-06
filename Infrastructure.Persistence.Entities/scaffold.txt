@@ -1,0 +1,1 @@
+dotnet ef dbcontext scaffold "server=127.0.0.1;port=3306;database=stocksim;user=root;password=root" Pomelo.EntityFrameworkCore.MySql --table stocks --table users --table userstock --force
