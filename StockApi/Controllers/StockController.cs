@@ -18,8 +18,14 @@ namespace StockApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<StockResponseContract> GetStock([FromRoute] int id)
         {
-            var stock = service.GetStock(id);
-            return Ok(stock);
+            try
+            {
+                var stock = service.GetStock(id);
+                return Ok(stock);
+            } catch(Exception e)
+            {
+                return NotFound(e.Message);
+            }
         }
         [HttpGet]
         public ActionResult<IEnumerable<StockResponseContract>> GetAllStocks()

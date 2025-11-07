@@ -15,7 +15,7 @@ public class StockRepository(StocksimContext dbContext) : IStockRepository
 
     public Stock GetStock(int id)
     {
-        return dbContext.Stocks.Find(id);
+        return dbContext.Stocks.Find(id)??throw new KeyNotFoundException();
     }
 
     public IEnumerable<Stock> GetAllStock()
