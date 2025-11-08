@@ -22,9 +22,9 @@ public static class StockMappingExtensions
         return new Stock
         {
             Id = stockModel.Id ?? 0,
-            Name = stockModel.Name,
-            Exchange = stockModel.Exchange,
-            Ticker = stockModel.TickerSymbol,
+            Name = stockModel.Name ?? throw new ArgumentNullException("Name is null"),
+            Exchange = stockModel.Exchange ?? "",
+            Ticker = stockModel.TickerSymbol ?? throw new ArgumentNullException("Ticker is null"),
         };
     }
 
@@ -44,11 +44,10 @@ public static class StockMappingExtensions
         return new StockResponseContract
         {
             Id = stock.Id ?? 0,
-            Exchange = stock.Exchange,
-            TickerSymbol = stock.TickerSymbol,
-            Name = stock.Name,
+            Exchange = stock.Exchange ?? "",
+            TickerSymbol = stock.TickerSymbol ?? throw new ArgumentNullException("Ticker is null"),
+            Name = stock.Name ?? throw new ArgumentNullException("Name is null"),
         };
     }
-    
 }
 
