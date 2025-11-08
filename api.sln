@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Model", "Domain.Mode
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Services", "Domain.Services\Domain.Services.csproj", "{CF32D281-4BB3-4C0E-BA7A-5755AED60D23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Scraper", "Infrastructure.Scraper\Infrastructure.Scraper.csproj", "{83A13F24-0675-490F-839A-D716B0C879BB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Persistence", "Infrastructure.Persistence\Infrastructure.Persistence.csproj", "{EF728257-DAE7-4A1C-B0A1-48C76B3EA0F7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Persistence.Entities", "Infrastructure.Persistence.Entities\Infrastructure.Persistence.Entities.csproj", "{0790826A-0598-496A-8135-6A67FDA65C1D}"
