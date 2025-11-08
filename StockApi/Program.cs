@@ -1,10 +1,11 @@
 using Domain.Services;
 using Domain.Services.Interfaces;
+using Infrastructure.ExternalApi;
+using Infrastructure.ExternalApi.Interfaces;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Entities;
 using Infrastructure.Persistence.Interfaces;
-using Infrastructure.Scraper;
-using Infrastructure.Scraper.Interfaces;
+
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +21,7 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddScoped<IStockService, StockService>();
 builder.Services.AddScoped<IStockRepository, StockRepository>();
-builder.Services.AddScoped<IStockScraper, StockScraper>();
+builder.Services.AddScoped<IFMPDataProvider, FMPDataProvider>();
 
 builder.Services.AddControllers();
 

@@ -1,8 +1,8 @@
 using System;
 
-namespace Infrastructure.Scraper.Interfaces;
+namespace Infrastructure.ExternalApi.Interfaces;
 
-public interface IStockScraper
+public interface IFMPDataProvider
 {
     public Task<double> GetPrice(string ticker, string exchange);
 }

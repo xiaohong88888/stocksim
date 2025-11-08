@@ -16,11 +16,11 @@ namespace StockApi.Controllers
             return CreatedAtAction(nameof(GetStock), new { id = createdStock.Id }, createdStock);
         }
         [HttpGet("{id}")]
-        public ActionResult<StockResponseContract> GetStock([FromRoute] int id)
+        public async Task<ActionResult<StockResponseContract>> GetStock([FromRoute] int id)
         {
             try
             {
-                var stock = service.GetStock(id);
+                var stock = await service.GetStock(id);
                 return Ok(stock);
             } catch(Exception e)
             {

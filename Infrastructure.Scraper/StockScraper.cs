@@ -1,30 +1,24 @@
-using System;
-using System.Net.Http;
-using System.Net.NetworkInformation;
-using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Threading.Tasks;
 using Infrastructure.Scraper.Interfaces;
 namespace Infrastructure.Scraper;
 
-public class StockScraper:IStockScraper
+public class StockScraper : IStockScraper
 {
+
     public async Task<double> GetPrice(string ticker, string exchange)
     {
-        string symbol = ticker + ":" + exchange;
-        string url = $"https://www.google.com/finance/quote/{symbol}";
+        string _apiKey = "fIgA75UuqY61RcmYKkINlaVBWDEOVkBy; // Replace with your FMP key if you have one
+        string url = $"https://financialmodelingprep.com/stable/quote-short?symbol={ticker}&apikey={_apiKey}";
         using (var client = new HttpClient())
         {
-            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0");
-            string html = await client.GetStringAsync(url);
-            var match = Regex.Match(html, @"<div class=""YMlKec fxKbKc"">.&nbsp;([\d,\.]+)<\/div>");
-            if (!match.Success)
-                throw new InvalidOperationException("Price not found in HTML.");
-            var priceText = match.Groups[1].Value.Replace(",", ".").Trim();
-            if (!double.TryParse(priceText, NumberStyles.Any, CultureInfo.InvariantCulture, out var price))
-                throw new FormatException($"Unable to parse price '{priceText}'.");
-            return price;
+            var json = await client.GetStringAsync(url);
+            string response = await client.GetStringAsync(url);
+            var quotes = JsonSerializer.Deserialize<List<Quote>>(json);
+            var data = JsonConvert.DeserializeObject<Class2>(response);
+            return quotes?.FirstOrDefault();
         }
     }
+    
 }

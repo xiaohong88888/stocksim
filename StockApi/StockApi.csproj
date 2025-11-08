@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain.Services\Domain.Services.csproj" />
+    <ProjectReference Include="..\Infrastructure.ExternalApi\Infrastructure.ExternalApi.csproj" />
   </ItemGroup>
 
 </Project>

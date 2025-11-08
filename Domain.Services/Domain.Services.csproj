@@ -9,9 +9,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Api.Contracts\Api.Contracts.csproj" />
     <ProjectReference Include="..\Domain.Model\Domain.Model.csproj" />
+    <ProjectReference Include="..\Infrastructure.ExternalApi\Infrastructure.ExternalApi.csproj" />
     <ProjectReference Include="..\Infrastructure.Persistence.Entities\Infrastructure.Persistence.Entities.csproj" />
     <ProjectReference Include="..\Infrastructure.Persistence\Infrastructure.Persistence.csproj" />
-    <ProjectReference Include="..\Infrastructure.Scraper\Infrastructure.Scraper.csproj" />
   </ItemGroup>
 
 </Project>

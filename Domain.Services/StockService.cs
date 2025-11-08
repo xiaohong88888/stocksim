@@ -1,14 +1,15 @@
 using System;
+using System.Threading.Tasks;
 using Api.Contracts;
 using Domain.Services.Interfaces;
 using Domain.Services.Mapping;
+using Infrastructure.ExternalApi.Interfaces;
 using Infrastructure.Persistence.Entities;
 using Infrastructure.Persistence.Interfaces;
-using Infrastructure.Scraper.Interfaces;
 
 namespace Domain.Services;
 
-public class StockService(IStockScraper stockScraper, IStockRepository stockRepository) : IStockService
+public class StockService(IFMPDataProvider dataProvider, IStockRepository stockRepository) : IStockService
 {
     public StockResponseContract CreateStock(StockRequestContract stockRequestContract)
     {
@@ -22,8 +23,17 @@ public class StockService(IStockScraper stockScraper, IStockRepository stockRepo
         return stockRepository.GetAllStock().Select(s=>s.EntityAsStockModel().StockModelAsResponseContract());
     }
 
-    public StockResponseContract GetStock(int id)
+    public async Task<StockResponseContract> GetStock(int id)
     {
-        return stockRepository.GetStock(id).EntityAsStockModel().StockModelAsResponseContract();
+        var stock = stockRepository.GetStock(id).EntityAsStockModel().StockModelAsResponseContract();
+        stock.Price = await GetStockPrice(stock);
+        return stock;
+    }
+
+    private async Task<double> GetStockPrice(StockResponseContract stockResponseContract)
+    {
+        var price = await dataProvider.GetPrice(stockResponseContract.TickerSymbol, stockResponseContract.Exchange);
+        stockResponseContract.Price = price;
+        return price;
     }
 }

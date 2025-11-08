@@ -6,6 +6,6 @@ public interface IStockService
 {
     public StockResponseContract CreateStock(StockRequestContract stockRequestContract);
     public IEnumerable<StockResponseContract> GetAllStock();
-    public StockResponseContract GetStock(int id);
+    public Task<StockResponseContract> GetStock(int id);
 
 }
