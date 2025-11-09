@@ -53,7 +53,9 @@ public partial class StocksimContext : DbContext
             entity.ToTable("users");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Balance).HasColumnName("balance");
+            entity.Property(e => e.Balance)
+                .HasPrecision(10)
+                .HasColumnName("balance");
             entity.Property(e => e.Email)
                 .HasMaxLength(45)
                 .HasColumnName("email");

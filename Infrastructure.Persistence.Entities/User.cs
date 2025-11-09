@@ -11,7 +11,7 @@ public partial class User
 
     public string Email { get; set; } = null!;
 
-    public int Balance { get; set; }
+    public decimal Balance { get; set; }
 
     public virtual ICollection<Userstock> Userstocks { get; set; } = new List<Userstock>();
 }
