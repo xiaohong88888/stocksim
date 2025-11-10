@@ -10,11 +10,12 @@ namespace StockApi.Controllers
     public class StockController(IStockService service) : ControllerBase
     {
         [HttpPost]
-        public ActionResult<StockResponseContract> CreateStock(StockRequestContract stockRequestContract)
+        public ActionResult<StockResponseContract> CreateStock([FromBody] StockRequestContract stockRequestContract)
         {
             var createdStock = service.CreateStock(stockRequestContract);
             return CreatedAtAction(nameof(GetStock), new { id = createdStock.Id }, createdStock);
         }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<StockResponseContract>> GetStock([FromRoute] int id)
         {
@@ -22,11 +23,13 @@ namespace StockApi.Controllers
             {
                 var stock = await service.GetStock(id);
                 return Ok(stock);
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
                 return NotFound(e.Message);
             }
         }
+        
         [HttpGet]
         public ActionResult<IEnumerable<StockResponseContract>> GetAllStocks()
         {
