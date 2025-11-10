@@ -19,15 +19,29 @@ namespace StockApi.Controllers
         [HttpGet("{id}")]
         public ActionResult<UserResponseContract> GetUserById([FromRoute] int id)
         {
-            var result = userService.GetUserById(id);
-            return Ok(result);
+            try
+            {
+                var result = userService.GetUserById(id);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpPost]
         public ActionResult<UserResponseContract> CreateUser([FromBody] UserRequestContract userRequestContract)
         {
-            var createdUser = userService.CreateUser(userRequestContract);
-            return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, createdUser);
+            try
+            {
+                var createdUser = userService.CreateUser(userRequestContract);
+                return CreatedAtAction(nameof(GetUserById), new { id = createdUser.Id }, createdUser);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

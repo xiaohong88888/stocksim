@@ -12,8 +12,15 @@ namespace StockApi.Controllers
         [HttpPost]
         public ActionResult<StockResponseContract> CreateStock([FromBody] StockRequestContract stockRequestContract)
         {
-            var createdStock = service.CreateStock(stockRequestContract);
-            return CreatedAtAction(nameof(GetStock), new { id = createdStock.Id }, createdStock);
+            try
+            {
+                var createdStock = service.CreateStock(stockRequestContract);
+                return CreatedAtAction(nameof(GetStock), new { id = createdStock.Id }, createdStock);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpGet("{id}")]

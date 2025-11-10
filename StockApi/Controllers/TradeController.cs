@@ -10,17 +10,31 @@ namespace StockApi.Controllers
     public class TradeController(ITradeService tradeService) : ControllerBase
     {
         [HttpPost("buy")]
-        public ActionResult<TradeStockResponseContract> BuyStock([FromBody]TradeStockRequestContract tradeStockRequestContract)
+        public async Task<ActionResult<TradeStockResponseContract>> BuyStock([FromBody]TradeStockRequestContract tradeStockRequestContract)
         {
-            var tradedStock = tradeService.BuyStock(tradeStockRequestContract);
-            return Ok(tradedStock);
+            try
+            {
+                var tradedStock = await tradeService.BuyStock(tradeStockRequestContract);
+                return Ok(tradedStock);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         [HttpPost("sell")]
-        public ActionResult<TradeStockResponseContract> SellStock([FromBody]TradeStockRequestContract tradeStockRequestContract)
+        public async Task<ActionResult<TradeStockResponseContract>> SellStock([FromBody]TradeStockRequestContract tradeStockRequestContract)
         {
-            var tradedStock = tradeService.SellStock(tradeStockRequestContract);
-            return Ok(tradedStock);
+            try
+            {
+                var tradedStock = await tradeService.SellStock(tradeStockRequestContract);
+                return Ok(tradedStock);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }
