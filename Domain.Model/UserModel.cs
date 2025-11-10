@@ -4,8 +4,9 @@ namespace Domain.Model;
 
 public class UserModel
 {
-    int? Id { get; set; }
-    string? Name { get; set; }
-    string? Email { get; set; }
-    WalletModel? Wallet { get; set; }
+    public int? Id { get; set; }
+    public string? Name { get; set; }
+    public string? Email { get; set; }
+    public decimal? Balance { get; set; }
+    public WalletModel? Wallet { get; set; }
 }
