@@ -26,6 +26,9 @@ builder.Services.AddScoped<IFMPDataProvider, FMPDataProvider>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 
+builder.Services.AddScoped<ITradeService, TradeService>();
+builder.Services.AddScoped<IUserStockRepository, UserStockRepository>();
+
 builder.Services.AddControllers();
 
 var app = builder.Build();

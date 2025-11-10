@@ -8,5 +8,4 @@ public class UserModel
     public string? Name { get; set; }
     public string? Email { get; set; }
     public decimal? Balance { get; set; }
-    public WalletModel? Wallet { get; set; }
 }
