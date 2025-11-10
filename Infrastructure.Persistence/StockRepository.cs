@@ -19,7 +19,7 @@ public class StockRepository(StocksimContext dbContext) : IStockRepository
         return dbContext.Stocks.Find(id) ?? throw new StockNotFoundException(id);
     }
 
-    public IEnumerable<Stock> GetAllStock()
+    public IEnumerable<Stock> GetAllStocks()
     {
         return dbContext.Stocks;
     }

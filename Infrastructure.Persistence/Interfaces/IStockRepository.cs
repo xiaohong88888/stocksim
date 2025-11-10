@@ -7,5 +7,5 @@ public interface IStockRepository
 {
     public Stock CreateStock(Stock stock);
     public Stock GetStock(int id);
-    public IEnumerable<Stock> GetAllStock();
+    public IEnumerable<Stock> GetAllStocks();
 }

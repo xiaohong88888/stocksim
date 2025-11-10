@@ -18,9 +18,9 @@ public class StockService(IFMPDataProvider dataProvider, IStockRepository stockR
         return stock.EntityAsStockModel().StockModelAsResponseContract();
     }
 
-    public IEnumerable<StockResponseContract> GetAllStock()
+    public IEnumerable<StockResponseContract> GetAllStocks()
     {
-        return stockRepository.GetAllStock().Select(s=>s.EntityAsStockModel().StockModelAsResponseContract());
+        return stockRepository.GetAllStocks().Select(s=>s.EntityAsStockModel().StockModelAsResponseContract());
     }
 
     public async Task<StockResponseContract> GetStock(int id)

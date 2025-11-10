@@ -30,7 +30,7 @@ namespace StockApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<StockResponseContract>> GetAllStocks()
         {
-            var result = service.GetAllStock();
+            var result = service.GetAllStocks();
             return Ok(result);
         }
     }
