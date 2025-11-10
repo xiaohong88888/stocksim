@@ -24,4 +24,30 @@ public class UserRepository(StocksimContext dbContext) : IUserRepository
     {
         return dbContext.Users.Find(id) ?? throw new UserNotFoundException(id);
     }
+
+    public decimal GetBalance(int id)
+    {
+        var user = GetUser(id);
+        return user.Balance;
+    }
+    
+    public decimal AddBalance(int id, decimal amount)
+    {
+        var user = GetUser(id);
+        user.Balance += amount;
+        dbContext.SaveChanges();
+        return user.Balance;
+    }
+
+    public decimal SubstractBalance(int id, decimal amount)
+    {
+        var user = GetUser(id);
+        if (user.Balance < amount)
+        {
+            throw new InvalidOperationException("user balance too low");
+        }
+        user.Balance -= amount;
+        dbContext.SaveChanges();
+        return user.Balance;
+    }
 }

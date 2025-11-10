@@ -26,14 +26,7 @@ public class StockService(IFMPDataProvider dataProvider, IStockRepository stockR
     public async Task<StockResponseContract> GetStock(int id)
     {
         var stock = stockRepository.GetStock(id).EntityAsStockModel().StockModelAsResponseContract();
-        stock.Price = await GetStockPrice(stock);
+        stock.Price = await dataProvider.GetPrice(stock.TickerSymbol);
         return stock;
-    }
-
-    private async Task<double> GetStockPrice(StockResponseContract stockResponseContract)
-    {
-        var price = await dataProvider.GetPrice(stockResponseContract.TickerSymbol, stockResponseContract.Exchange);
-        stockResponseContract.Price = price;
-        return price;
     }
 }

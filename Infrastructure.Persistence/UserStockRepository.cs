@@ -24,7 +24,7 @@ public class UserStockRepository(StocksimContext dbContext) : IUserStockReposito
 
     public Userstock SellStock(Userstock userstock)
     {
-        Userstock? us = GetUserstock(userstock.Id, userstock.StockId);
+        Userstock? us = GetUserstock(userstock.UserId, userstock.StockId);
         if (us == null)
         {
             throw new Exception("stock not found for user");
@@ -33,13 +33,10 @@ public class UserStockRepository(StocksimContext dbContext) : IUserStockReposito
         {
             throw new Exception("not enough stock to sell");
         }
-        else if (us.Quantity == userstock.Quantity)
+        us.Quantity -= userstock.Quantity;
+        if (us.Quantity == userstock.Quantity)
         {
             dbContext.Userstocks.Remove(us);
-        }
-        else
-        {
-            us.Quantity -= userstock.Quantity;
         }
         dbContext.SaveChanges();
         return us;

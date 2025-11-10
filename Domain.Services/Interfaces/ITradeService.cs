@@ -5,6 +5,6 @@ namespace Domain.Services.Interfaces;
 
 public interface ITradeService
 {
-    public TradeStockResponseContract BuyStock(TradeStockRequestContract tradeStockRequestContract);
-    public TradeStockResponseContract SellStock(TradeStockRequestContract tradeStockRequestContract);
+    public Task<TradeStockResponseContract> BuyStock(TradeStockRequestContract tradeStockRequestContract);
+    public Task<TradeStockResponseContract> SellStock(TradeStockRequestContract tradeStockRequestContract);
 }

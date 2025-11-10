@@ -9,7 +9,7 @@ namespace Infrastructure.ExternalApi;
 
 public class FMPDataProvider(IConfiguration config) : IFMPDataProvider
 {
-    public async Task<double> GetPrice(string ticker, string exchange)
+    public async Task<double> GetPrice(string ticker)
     {
         string apiKey = config["ApiKeys:FMPKey"] ?? throw new ApiKeyException("api key not found");
         string url = $"https://financialmodelingprep.com/stable/quote-short?symbol={ticker}&apikey={apiKey}";
