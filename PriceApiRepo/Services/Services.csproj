@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataProviders\DataProviders.csproj" />
+    <ProjectReference Include="..\PriceApi.Contracts\PriceApi.Contracts.csproj" />
+    <ProjectReference Include="..\Storage.Repositories\Storage.Repositories.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+    <Folder Include="Mappers\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+</Project>
