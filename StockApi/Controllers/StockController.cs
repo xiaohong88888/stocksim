@@ -1,5 +1,6 @@
 using Api.Contracts;
 using Domain.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,8 +37,9 @@ namespace StockApi.Controllers
                 return NotFound(e.Message);
             }
         }
-        
+
         [HttpGet]
+        [Authorize]
         public ActionResult<IEnumerable<StockResponseContract>> GetAllStocks()
         {
             var result = service.GetAllStocks();
