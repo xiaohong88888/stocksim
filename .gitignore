@@ -54,3 +54,4 @@ Migrations/
 *.vspx
 *.tmp
 *.userprefs
+DuendeIdentityServer/appsettings.Development.json
