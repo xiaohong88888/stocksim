@@ -41,7 +41,8 @@ internal static class HostingExtensions
             // .AddInMemoryClients(Config.Clients)
             // use configuration from db
             .AddConfigurationStore()
-            .AddAspNetIdentity<ApplicationUser>();
+            .AddAspNetIdentity<ApplicationUser>()
+            .AddProfileService<StocksimProfileService>();
 
         builder.Services.AddAuthentication()
             .AddGoogle(options =>

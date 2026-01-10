@@ -6,15 +6,23 @@ using Services;
 using Services.Interfaces;
 using Storage.Repositories;
 using Storage.Repositories.Interfaces;
+using PriceApi;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<IAuthorizationHandler, StocksimAuthHandler>();
+
 builder.Services.AddAuthentication()
     .AddJwtBearer(options =>
     {
         options.Authority = "https://localhost:5001";
         options.TokenValidationParameters.ValidateAudience = false;
+        options.MapInboundClaims = false;
+
         // do not remove otherwise get ???????????????????
         // Bearer error="invalid_token", error_description="The issuer 'https://localhost:5001' is invalid" ???????
         options.BackchannelHttpHandler = new HttpClientHandler
@@ -23,7 +31,16 @@ builder.Services.AddAuthentication()
         };
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("PriceReadPolicy", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "stocksim.priceapi.read");
+    })
+    .AddPolicy("PriceWritePolicy", policy =>
+    {
+        policy.Requirements.Add(new StocksimAuthRequirement("stocksim.priceapi.write", "Admin"));
+    });
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
