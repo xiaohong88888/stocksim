@@ -85,7 +85,7 @@ public class SeedData
                 Log.Debug("bob already exists");
             }
         }
-        //...
+        // clients to db
         using (var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
         {
             var context = scope.ServiceProvider
