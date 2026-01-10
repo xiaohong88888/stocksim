@@ -28,7 +28,7 @@ public static class Config
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
                 ClientSecrets = { new Secret("eengrootgeheim".Sha256()) },
 
-                AllowedScopes = { "stocksim.priceapi" }
+                AllowedScopes = { "stocksim.priceapi", "stocksim.tradeapi" }
             },
         };
 }

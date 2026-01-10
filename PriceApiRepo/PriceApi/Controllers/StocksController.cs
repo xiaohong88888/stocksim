@@ -17,7 +17,7 @@ namespace PriceApi.Controllers
             var stocks = await stockPriceService.GetStockPriceByIdAsync(id);
             return Ok(stocks);
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateStockPrice([FromBody] StockPriceRequestContract request)
         {

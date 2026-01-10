@@ -1,4 +1,5 @@
 using Duende.IdentityServer;
+using Duende.IdentityServer.EntityFramework.DbContexts;
 using DuendeIS.Data;
 using DuendeIS.Models;
 using Microsoft.AspNetCore.Identity;
@@ -16,6 +17,10 @@ internal static class HostingExtensions
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+        builder.Services.AddDbContext<ConfigurationDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+            options => options.MigrationsAssembly(typeof(Program).Assembly.GetName().Name)));
+
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
@@ -30,9 +35,12 @@ internal static class HostingExtensions
                 // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
                 options.EmitStaticAudienceClaim = true;
             })
-            .AddInMemoryIdentityResources(Config.IdentityResources)
-            .AddInMemoryApiScopes(Config.ApiScopes)
-            .AddInMemoryClients(Config.Clients)
+            // in memory
+            // .AddInMemoryIdentityResources(Config.IdentityResources)
+            // .AddInMemoryApiScopes(Config.ApiScopes)
+            // .AddInMemoryClients(Config.Clients)
+            // use configuration from db
+            .AddConfigurationStore()
             .AddAspNetIdentity<ApplicationUser>();
 
         builder.Services.AddAuthentication()
