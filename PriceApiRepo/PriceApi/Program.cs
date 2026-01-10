@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using DataProviders;
 using DataProviders.Interfaces;
 using Microsoft.Azure.Cosmos;
@@ -9,6 +10,20 @@ using Storage.Repositories.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddAuthentication()
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://localhost:5001";
+        options.TokenValidationParameters.ValidateAudience = false;
+        // do not remove otherwise get ???????????????????
+        // Bearer error="invalid_token", error_description="The issuer 'https://localhost:5001' is invalid" ???????
+        options.BackchannelHttpHandler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
+    });
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -36,6 +51,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

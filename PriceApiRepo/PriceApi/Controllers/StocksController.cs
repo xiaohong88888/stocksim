@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PriceApi.Contracts;
@@ -9,13 +10,14 @@ namespace PriceApi.Controllers
     [ApiController]
     public class StocksController(IStockPriceService stockPriceService) : ControllerBase
     {
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStockPriceById(string id)
         {
             var stocks = await stockPriceService.GetStockPriceByIdAsync(id);
             return Ok(stocks);
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateStockPrice([FromBody] StockPriceRequestContract request)
         {
@@ -23,6 +25,7 @@ namespace PriceApi.Controllers
             return Ok(result);
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllStockPrices()
         {
             var stocks = await stockPriceService.GetAllStockPricesAsync();
