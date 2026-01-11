@@ -39,12 +39,21 @@ public class StockPriceRepository(CosmosClient cosmosClient) : IStockPriceReposi
 
     public async Task<StockPriceStorageContract> GetStockPriceByIdAsync(string id)
     {
-        var item = await GetCosmosContainer().ReadItemAsync<StockPriceStorageContract>(
+        try
+        {
+            var item = await GetCosmosContainer().ReadItemAsync<StockPriceStorageContract>(
             id: id,
             partitionKey: new PartitionKey(id)
         );
-        if (item == null) { throw new CosmosDbException("Stock price not found in DB"); }
-        return item.Resource;
+            if (item == null) { throw new CosmosDbException("Stock price not found in DB"); }
+            return item.Resource;
+        }
+        catch (Exception ex)
+        {
+            throw new CosmosDbException("Error retrieving stock price from Cosmos DB", ex);
+        }
+
+
     }
 
     public async Task<StockPriceStorageContract> UpdateStockPriceAsync(StockPriceStorageContract stockPriceStorageContract)

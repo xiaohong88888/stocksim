@@ -23,6 +23,7 @@ public static class Config
         {
             new ApiScope("stocksim.priceapi.read"),
             new ApiScope("stocksim.priceapi.write"),
+            new ApiScope("stocksim.tradeapi")
         };
 
     public static IEnumerable<Client> Clients =>
@@ -44,7 +45,7 @@ public static class Config
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
                 ClientSecrets = { new Secret("eenstockapigeheim".Sha256()) },
 
-                AllowedScopes = { "stocksim.priceapi.read", "stocksim.priceapi.write" }
+                AllowedScopes = { "stocksim.priceapi.read", "stocksim.priceapi.write" , "stocksim.tradeapi" }
             },
             // frontend client
             new Client
@@ -58,6 +59,7 @@ public static class Config
                     IdentityServerConstants.StandardScopes.Profile,
                     "stocksim.priceapi.read",
                     "stocksim.priceapi.write",
+                    "stocksim.tradeapi",
                     "myuserroles"
                 },
                 RedirectUris = { "http://localhost:5173/" },
