@@ -18,7 +18,7 @@ public class TradeRepository(SqlConnection connection) : ITradeRepository
 
     public async Task DeleteAsync(int id)
     {
-        string query = "DELETE FROM UserStocks WHERE ID = @Id";
+        string query = "DELETE FROM UserStocks WHERE UserStocksId = @Id";
         await connection.ExecuteAsync(query, new { Id = id });
     }
 
