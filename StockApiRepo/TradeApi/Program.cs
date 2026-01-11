@@ -3,10 +3,38 @@ using TradeApi.Repositories;
 using TradeApi.Repositories.Interfaces;
 using TradeApi.Services;
 using TradeApi.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using TradeApi;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<IAuthorizationHandler, StocksimAuthHandler>();
+
+builder.Services.AddAuthentication()
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://localhost:5001";
+        options.TokenValidationParameters.ValidateAudience = false;
+        options.MapInboundClaims = false;
+
+        // do not remove otherwise get ???????????????????
+        // Bearer error="invalid_token", error_description="The issuer 'https://localhost:5001' is invalid" ???????
+        options.BackchannelHttpHandler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
+    });
+
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("TradePolicy", policy =>
+    {
+        policy.Requirements.Add(new StocksimAuthRequirement("stocksim.tradeapi", "Trader"));
+    });
+
 builder.Services.AddControllers();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
