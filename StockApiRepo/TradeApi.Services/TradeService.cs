@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http.Json;
+using Duende.IdentityModel.Client;
 using TradeApi.Contracts;
 using TradeApi.Repositories;
 using TradeApi.Repositories.Interfaces;
@@ -8,8 +9,9 @@ using TradeApi.Services.Interfaces;
 
 namespace TradeApi.Services;
 
-public class TradeService(ITradeRepository tradeRepository, IBalanceRepository balanceRepository, HttpClient httpClient) : ITradeService
+public class TradeService(ITradeRepository tradeRepository, IBalanceRepository balanceRepository, IHttpClientFactory httpClientFactory) : ITradeService
 {
+    private readonly HttpClient isClient = httpClientFactory.CreateClient("isClient");
     public async Task<TradeResponseContract> BuyStock(TradeRequestContract request)
     {
         // handle balance changes
@@ -43,6 +45,7 @@ public class TradeService(ITradeRepository tradeRepository, IBalanceRepository b
             UserStocksId = userStock.UserStocksId,
             UserId = request.UserId,
             Symbol = request.Symbol,
+            Price = price,
             Quantity = userStock.Quantity,
             Balance = newBalance
         };
@@ -119,8 +122,21 @@ public class TradeService(ITradeRepository tradeRepository, IBalanceRepository b
 
     private async Task<decimal> GetPriceAsync(string symbol)
     {
+        var isUrl = "https://localhost:5001";
+        var disco = await isClient.GetDiscoveryDocumentAsync(isUrl);
+        var tokenResponse = await isClient
+            .RequestClientCredentialsTokenAsync(
+                new ClientCredentialsTokenRequest
+                {
+                    Address = disco.TokenEndpoint,
+                    ClientId = "stockapi.client",
+                    ClientSecret = "eenstockapigeheim",
+                    Scope = "stocksim.priceapi.read stocksim.priceapi.write"
+                });
+        isClient.SetBearerToken(tokenResponse.AccessToken);
         var url = $"http://localhost:5234/api/stocks/{symbol}";
-        var response = await httpClient.GetFromJsonAsync<StockPriceContract>(url);
+        var response = await isClient.GetFromJsonAsync<StockPriceContract>(url);
+        await ClearToken();
         if (response == null) throw new Exception("Stock not found");
         return Convert.ToDecimal(response.Price);
     }
@@ -129,5 +145,27 @@ public class TradeService(ITradeRepository tradeRepository, IBalanceRepository b
     {
         var userStocks = await tradeRepository.GetByUserIdAsync(userId);
         return userStocks.FirstOrDefault(s => s.Symbol == symbol);
+    }
+
+    private async Task<HttpClient> InitISClient()
+    {
+        var isUrl = "https://localhost:5001";
+        var disco = await isClient.GetDiscoveryDocumentAsync(isUrl);
+        var tokenResponse = await isClient
+            .RequestClientCredentialsTokenAsync(
+                new ClientCredentialsTokenRequest
+                {
+                    Address = disco.TokenEndpoint,
+                    ClientId = "stockapi.client",
+                    ClientSecret = "eenstockapigeheim",
+                    Scope = "stocksim.priceapi.read stocksim.priceapi.write"
+                });
+        isClient.SetBearerToken(tokenResponse.AccessToken);
+        return isClient;
+    }
+
+    private async Task ClearToken()
+    {
+        isClient.SetBearerToken(string.Empty);
     }
 }

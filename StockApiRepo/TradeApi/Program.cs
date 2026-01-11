@@ -22,7 +22,15 @@ builder.Services.AddScoped<ITradeService, TradeService>();
 builder.Services.AddScoped<ITradeRepository, TradeRepository>();
 builder.Services.AddScoped<IBalanceRepository, BalanceRepository>();
 
-builder.Services.AddHttpClient();
+// self-signed certificate not trusted?????
+builder.Services.AddHttpClient("isClient")
+    .ConfigurePrimaryHttpMessageHandler(sp =>
+    {
+        return new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+        };
+    });
 
 var app = builder.Build();
 
