@@ -119,7 +119,7 @@ public class TradeService(ITradeRepository tradeRepository, IBalanceRepository b
 
     private async Task<decimal> GetPriceAsync(string symbol)
     {
-        var url = $"https://stocksim-priceapi-xiaohongzhou.azurewebsites.net/api/stocks/{symbol}";
+        var url = $"http://localhost:5234/api/stocks/{symbol}";
         var response = await httpClient.GetFromJsonAsync<StockPriceContract>(url);
         if (response == null) throw new Exception("Stock not found");
         return Convert.ToDecimal(response.Price);

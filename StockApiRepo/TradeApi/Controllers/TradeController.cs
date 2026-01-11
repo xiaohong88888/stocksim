@@ -10,13 +10,20 @@ namespace TradeApi.Controllers
     public class TradeController(ITradeService service) : ControllerBase
     {
         [HttpPost("buy")]
-        public async Task<TradeResponseContract> BuyStock([FromBody] TradeRequestContract request)
+        public async Task<ActionResult<TradeResponseContract>> BuyStock([FromBody] TradeRequestContract request)
         {
-            return await service.BuyStock(request);
+            try
+            {
+                return Ok(await service.BuyStock(request));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("sell")]
-        public async Task<TradeResponseContract> SellStock([FromBody] TradeRequestContract request)
+        public async Task<ActionResult<TradeResponseContract>> SellStock([FromBody] TradeRequestContract request)
         {
             return await service.SellStock(request);
         }

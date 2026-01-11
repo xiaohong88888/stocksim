@@ -39,7 +39,13 @@ builder.Services.AddAuthorizationBuilder()
     })
     .AddPolicy("PriceWritePolicy", policy =>
     {
-        policy.Requirements.Add(new StocksimAuthRequirement("stocksim.priceapi.write", "Admin"));
+        // policy.Requirements.Add(new StocksimAuthRequirement("stocksim.priceapi.write", "Admin"));
+        policy.RequireAssertion(context =>
+        {
+            var admin = context.User.IsInRole("Admin");
+            var stockapi = context.User.HasClaim(c => c.Type == "client_id" && c.Value == "stockapi.client");
+            return admin || stockapi;
+        });
     });
 
 builder.Services.AddControllers();

@@ -31,14 +31,14 @@ public class TradeRepository(SqlConnection connection) : ITradeRepository
 
     public async Task<UserStock?> GetByIdAsync(int id)
     {
-        string query = "SELECT * FROM UserStocks WHERE Id = @Id";
+        string query = "SELECT * FROM UserStocks WHERE UserStocksId = @Id";
         var userStock = await connection.QuerySingleOrDefaultAsync<UserStock>(query, new { Id = id });
         return userStock;
     }
 
     public async Task<UserStock> UpdateAsync(UserStock userStock)
     {
-        string query = "UPDATE UserStocks SET UserId = @UserId, Symbol = @Symbol, Quantity = @Quantity WHERE Id = @UserStocksId";
+        string query = "UPDATE UserStocks SET UserId = @UserId, Symbol = @Symbol, Quantity = @Quantity WHERE UserStocksId = @UserStocksId";
         await connection.ExecuteAsync(query, userStock);
         return await GetByIdAsync(userStock.UserStocksId) ?? throw new Exception($"UserStock ({userStock.UserId}, {userStock.Symbol}, {userStock.Quantity}) could not be updated");
     }
