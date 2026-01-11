@@ -56,7 +56,7 @@ builder.Services.AddScoped<IStockPriceRepository, StockPriceRepository>();
 // data providers
 builder.Services.AddScoped<IFMPDataProvider, FMPDataProvider>();
 // http client
-builder.Services.AddScoped<HttpClient>();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
